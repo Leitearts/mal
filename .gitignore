@@ -1,3 +1,17 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Logs and runtime artifacts
+logs/
+*.log
+*.jsonl
+
+# Generated test PCAP files
+*.pcap
+
+# Quarantine directory
+quarantine/
+
+# Models
+models/
