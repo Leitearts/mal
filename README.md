@@ -287,7 +287,36 @@ malware_detection_mvp/
 
 ## Testing
 
-### Test with EICAR File
+### Automated Test Suite
+
+The project includes a comprehensive pytest test suite covering:
+
+- **EICAR Detection**: Validates that EICAR test files are detected
+- **Benign File Handling**: Ensures normal files are not flagged
+- **Oversized File Rejection**: Tests file size limit enforcement
+- **Invalid Config Handling**: Verifies fail-fast behavior
+- **Malformed Packet Handling**: Ensures robustness against invalid input
+
+**Run tests locally:**
+```bash
+cd malware_detection_mvp
+pip install -r requirements.txt
+pytest
+```
+
+**Run with verbose output:**
+```bash
+pytest -v
+```
+
+**Run specific test:**
+```bash
+pytest tests/test_signature_detection.py::test_eicar_detection
+```
+
+See `tests/README.md` for detailed testing documentation.
+
+### Manual Test with EICAR File
 
 Create a test PCAP with EICAR test file:
 
