@@ -6,6 +6,7 @@ import os
 import tempfile
 import shutil
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 import pytest
 
 
@@ -37,8 +38,10 @@ def test_logging_initialization_without_logs_directory():
             # The module should handle missing logs directory gracefully
             import detection_system
             
-            # If we get here without exception, the test passes
-            assert True
+            # Verify the module was imported successfully
+            assert detection_system is not None, "detection_system module should be imported"
+            assert hasattr(detection_system, 'logger'), "Module should have logger attribute"
+            assert hasattr(detection_system, 'MalwareDetectionSystem'), "Module should have MalwareDetectionSystem class"
             
         finally:
             # Restore original sys.path and working directory
@@ -114,36 +117,40 @@ logger = logging.getLogger(__name__)
 def test_logging_fallback_on_permission_error():
     """
     Test that logging falls back to console-only when directory cannot be created.
-    This test verifies the fallback mechanism works correctly.
+    This test uses mocking to simulate permission errors.
     """
-    # This test is more conceptual - in a real scenario with permission issues,
-    # the code should still work. We verify that the handler list is not empty
-    # even if file handler creation fails
+    # Save original sys.path
+    original_sys_path = sys.path.copy()
     
-    # Create a temporary directory
-    with tempfile.TemporaryDirectory() as tmpdir:
-        original_cwd = os.getcwd()
+    try:
+        # Add the src directory to sys.path
+        src_path = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
+        sys.path.insert(0, str(src_path))
         
-        try:
-            os.chdir(tmpdir)
-            
-            # We can't easily simulate permission errors in a cross-platform way,
-            # but we can verify that the logging module has handlers configured
+        # Mock Path.mkdir to raise PermissionError
+        with patch('pathlib.Path.mkdir', side_effect=PermissionError("Cannot create directory")):
+            # Clear any existing handlers to start fresh
             import logging
-            
-            # The detection_system module should have configured logging
-            # At minimum, there should be a StreamHandler
             root_logger = logging.getLogger()
+            for handler in root_logger.handlers[:]:
+                root_logger.removeHandler(handler)
             
-            # Verify that handlers exist (there should be at least one)
-            assert len(root_logger.handlers) > 0, "Should have at least one logging handler"
+            # Import the module - this should trigger the logging setup
+            # The _setup_logging function should catch the PermissionError and fall back to console-only
+            import detection_system
             
-            # Verify there's at least a StreamHandler as fallback
+            # Verify that logging was still configured (should have at least StreamHandler)
+            assert len(root_logger.handlers) > 0, "Should have at least one logging handler even after mkdir failure"
+            
+            # Verify there's a StreamHandler (fallback)
             has_stream_handler = any(
-                isinstance(h, logging.StreamHandler) 
+                isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
                 for h in root_logger.handlers
             )
-            assert has_stream_handler, "Should have a StreamHandler for fallback"
+            assert has_stream_handler, "Should have a StreamHandler for fallback when file logging fails"
             
-        finally:
-            os.chdir(original_cwd)
+    finally:
+        # Cleanup
+        sys.path = original_sys_path
+        if 'detection_system' in sys.modules:
+            del sys.modules['detection_system']
