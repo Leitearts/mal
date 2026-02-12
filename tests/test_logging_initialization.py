@@ -121,36 +121,46 @@ def test_logging_fallback_on_permission_error():
     """
     # Save original sys.path
     original_sys_path = sys.path.copy()
+    original_cwd = os.getcwd()
     
-    try:
-        # Add the src directory to sys.path
-        src_path = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
-        sys.path.insert(0, str(src_path))
-        
-        # Mock Path.mkdir to raise PermissionError
-        with patch('pathlib.Path.mkdir', side_effect=PermissionError("Cannot create directory")):
-            # Clear any existing handlers to start fresh
-            import logging
-            root_logger = logging.getLogger()
-            for handler in root_logger.handlers[:]:
-                root_logger.removeHandler(handler)
+    # Create a temporary directory to work in
+    with tempfile.TemporaryDirectory() as tmpdir:
+        try:
+            os.chdir(tmpdir)
             
-            # Import the module - this should trigger the logging setup
-            # The _setup_logging function should catch the PermissionError and fall back to console-only
-            import detection_system
+            # Add the src directory to sys.path
+            src_path = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
+            sys.path.insert(0, str(src_path))
             
-            # Verify that logging was still configured (should have at least StreamHandler)
-            assert len(root_logger.handlers) > 0, "Should have at least one logging handler even after mkdir failure"
+            # Remove detection_system from modules if it's already imported
+            if 'detection_system' in sys.modules:
+                del sys.modules['detection_system']
             
-            # Verify there's a StreamHandler (fallback)
-            has_stream_handler = any(
-                isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
-                for h in root_logger.handlers
-            )
-            assert has_stream_handler, "Should have a StreamHandler for fallback when file logging fails"
-            
-    finally:
-        # Cleanup
-        sys.path = original_sys_path
-        if 'detection_system' in sys.modules:
-            del sys.modules['detection_system']
+            # Mock Path.mkdir at the pathlib module level to raise PermissionError
+            # This will affect the mkdir call in detection_system._setup_logging
+            with patch('pathlib.Path.mkdir', side_effect=PermissionError("Cannot create directory")):
+                # Import the module - this should trigger the logging setup
+                # The _setup_logging function should catch the PermissionError and fall back to console-only
+                import detection_system
+                
+                # Get the logger to verify it was configured
+                import logging
+                root_logger = logging.getLogger()
+                
+                # Verify that logging was still configured (should have at least StreamHandler)
+                assert len(root_logger.handlers) > 0, "Should have at least one logging handler even after mkdir failure"
+                
+                # Verify there's a StreamHandler (fallback)
+                # Note: FileHandler is a subclass of StreamHandler, so we need to exclude FileHandler instances
+                has_stream_handler = any(
+                    isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
+                    for h in root_logger.handlers
+                )
+                assert has_stream_handler, "Should have a StreamHandler for fallback when file logging fails"
+                
+        finally:
+            # Cleanup
+            os.chdir(original_cwd)
+            sys.path = original_sys_path
+            if 'detection_system' in sys.modules:
+                del sys.modules['detection_system']
