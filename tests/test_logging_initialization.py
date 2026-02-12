@@ -9,6 +9,9 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 import pytest
 
+# Path to the detection_system module source directory
+SRC_PATH = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
+
 
 def test_logging_initialization_without_logs_directory():
     """
@@ -26,8 +29,7 @@ def test_logging_initialization_without_logs_directory():
             os.chdir(tmpdir)
             
             # Add the src directory to sys.path so we can import the module
-            src_path = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
-            sys.path.insert(0, str(src_path))
+            sys.path.insert(0, str(SRC_PATH))
             
             # Remove any existing logs directory in temp to ensure it doesn't exist
             logs_dir = Path(tmpdir) / 'logs'
@@ -129,8 +131,7 @@ def test_logging_fallback_on_permission_error():
             os.chdir(tmpdir)
             
             # Add the src directory to sys.path
-            src_path = Path(__file__).parent.parent / 'mvp' / 'malware_detection_mvp' / 'src'
-            sys.path.insert(0, str(src_path))
+            sys.path.insert(0, str(SRC_PATH))
             
             # Remove detection_system from modules if it's already imported
             if 'detection_system' in sys.modules:
@@ -151,7 +152,8 @@ def test_logging_fallback_on_permission_error():
                 assert len(root_logger.handlers) > 0, "Should have at least one logging handler even after mkdir failure"
                 
                 # Verify there's a StreamHandler (fallback)
-                # Note: FileHandler is a subclass of StreamHandler, so we need to exclude FileHandler instances
+                # Note: FileHandler inherits from StreamHandler, so we must exclude FileHandler instances
+                # to verify console-only fallback.
                 has_stream_handler = any(
                     isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
                     for h in root_logger.handlers
