@@ -8,6 +8,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.Python
 
 # Distribution / packaging
 .Python
@@ -69,6 +70,14 @@ env/
 *.swo
 *~
 
+# OS
+.DS_Store
+Thumbs.db
+
+# Test and coverage
+.pytest_cache/
+.coverage
+htmlcov/
 # Logs and databases
 *.log
 *.sqlite
