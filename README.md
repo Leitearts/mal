@@ -7,7 +7,7 @@ This is a production-oriented Minimum Viable Product (MVP) of a real-time networ
 **Key Features:**
 - Multi-protocol support (HTTP, SMTP, FTP)
 - TCP stream reassembly
-- Multi-layer detection (signatures, heuristics, ML)
+- Two-layer detection (signature matching + heuristic analysis)
 - Risk-based scoring and automated response
 - Quarantine and alerting capabilities
 - Modular, scalable architecture
@@ -36,10 +36,11 @@ This is a production-oriented Minimum Viable Product (MVP) of a real-time networ
                      │
                      ▼
 ┌──────────────────────────────────────────────────────┐
-│         Multi-Layer Detection Engine                 │
-│  ┌─────────────┐ ┌─────────────┐ ┌────────────────┐ │
-│  │ Signatures  │ │ Heuristics  │ │ ML Classifier  │ │
-│  └─────────────┘ └─────────────┘ └────────────────┘ │
+│         Two-Layer Detection Engine                   │
+│    ┌──────────────────┐  ┌──────────────────┐       │
+│    │   Signatures     │  │   Heuristics     │       │
+│    │  (Hash Match)    │  │ (Behavior Rules) │       │
+│    └──────────────────┘  └──────────────────┘       │
 └────────────────────┬─────────────────────────────────┘
                      │
                      ▼
@@ -134,9 +135,8 @@ sudo python src/detection_system.py config/config.json
   "entropy_threshold": 7.5,     // Entropy threshold for heuristics
   
   "risk_weights": {             // Detection layer weights
-    "signature": 0.40,
-    "heuristic": 0.30,
-    "ml": 0.30
+    "signature": 0.50,
+    "heuristic": 0.50
   },
   
   "malicious_threshold": 0.75,  // Risk score for malicious verdict
@@ -183,26 +183,21 @@ Matches files against known malware hashes:
 
 ### 2. Heuristic Analysis
 
-Analyzes file characteristics:
+Analyzes file characteristics using rule-based detection:
 - **Entropy analysis:** High entropy (>7.5) suggests encryption/packing
 - **File type mismatch:** Extension doesn't match content
 - **Embedded executables:** PE headers in non-executable files
 - **Suspicious strings:** API calls, shell commands, crypto keywords
 - **Double extensions:** document.pdf.exe patterns
+- **Byte statistics:** Entropy, diversity, printable ratio
+- **Structural features:** PE/PDF/ZIP headers
+- **String analysis:** Suspicious APIs, URLs
+- **Contextual features:** Source IP, file extension
 
 **Risk scoring:**
 - Each indicator adds 0.3-0.7 to risk score
 - Multiple indicators compound
-
-### 3. Machine Learning Classifier
-
-Feature extraction and classification:
-- Byte statistics (entropy, diversity, printable ratio)
-- Structural features (PE/PDF/ZIP headers)
-- String analysis (suspicious APIs, URLs)
-- Contextual features (source IP, file extension)
-
-**Note:** MVP uses rule-based scoring. Production would use trained RandomForest/XGBoost models.
+- Uses 50+ behavioral rules and statistical checks
 
 ---
 
@@ -212,7 +207,7 @@ Feature extraction and classification:
 
 Combines detection layers using weighted scoring:
 ```
-Risk = (0.4 × Signature) + (0.3 × Heuristic) + (0.3 × ML)
+Risk = (0.5 × Signature) + (0.5 × Heuristic)
 ```
 
 Context multipliers adjust based on:
@@ -277,7 +272,7 @@ malware_detection_mvp/
     "reasoning": [
       "Matched known malware signature (sha256)",
       "Heuristic: Suspicious or double file extension",
-      "ML classifier: 89.5% probability of malware"
+      "Heuristic analysis: 89.5% risk indicators present"
     ]
   }
 }
@@ -397,9 +392,9 @@ def _send_alert(self, ...):
 ### Performance Optimization
 
 1. **Use DPDK or PF_RING** for high-speed capture (10Gbps+)
-2. **GPU acceleration** for ML inference
-3. **Distributed workers** across multiple servers
-4. **Redis/PostgreSQL** for signature databases
+2. **Distributed workers** across multiple servers
+3. **Redis/PostgreSQL** for signature databases
+4. **Optimized heuristic rules** for faster analysis
 
 ### Security Hardening
 
@@ -422,7 +417,7 @@ def _send_alert(self, ...):
 ### Current MVP Limitations
 
 1. **No TLS decryption:** Cannot inspect HTTPS without MITM
-2. **Rule-based ML:** Uses heuristics instead of trained models
+2. **Rule-based detection only:** No machine learning models (uses heuristic rules)
 3. **Single-threaded capture:** Real production needs multi-core capture
 4. **No persistent state:** Stream state lost on restart
 5. **Limited protocol support:** HTTP, SMTP, FTP only
@@ -491,7 +486,7 @@ Tested on: Intel i7-8700K, 16GB RAM, Ubuntu 22.04
 To extend this MVP:
 
 1. Add new protocol parsers in `src/file_extraction.py`
-2. Implement ML model training in `src/ml_classifier.py`
+2. Add machine learning models (would require training data and model integration)
 3. Add YARA rule support to `src/signature_detection.py`
 4. Integrate with external APIs (VirusTotal, etc.)
 
