@@ -28,6 +28,11 @@ wheels/
 .pytest_cache/
 .tox/
 .coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+
+# IDEs
 htmlcov/
 *.cover
 
@@ -43,6 +48,9 @@ env/
 *.swo
 *~
 
+# Logs
+logs/
+*.log
 # OS
 .DS_Store
 Thumbs.db
