@@ -1,3 +1,20 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs and runtime artifacts
+logs/
+*.log
+*.jsonl
+
+# Generated test PCAP files
+*.pcap
+
+# Quarantine directory
+quarantine/
+
+# Models
+models/
 # Python cache files
 # Logs
 logs/
@@ -9,6 +26,9 @@ __pycache__/
 *$py.class
 *.so
 .Python
+env/
+venv/
+ENV/
 
 # Distribution / packaging
 .Python
@@ -46,6 +66,17 @@ wheels/
 .installed.cfg
 *.egg
 
+# Logs
+logs/
+*.log
+
+# Quarantine
+quarantine/
+
+# Virtual environments
+venv/
+env/
+ENV/
 # Testing
 .pytest_cache/
 .tox/
@@ -62,6 +93,7 @@ htmlcov/
 venv/
 ENV/
 env/
+.venv
 
 # IDE
 .vscode/
@@ -71,8 +103,21 @@ env/
 *~
 
 # Logs
+logs/*.log
+logs/*.jsonl
+*.log
+
+# Quarantine
+quarantine/
 *.log
 logs/
+*.jsonl
+
+# Malware detection system
+quarantine/
+samples/*.pcap
+models/*.pkl
+
 
 # Test artifacts
 .pytest_cache/
@@ -83,12 +128,50 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Project specific
+quarantine/
+*.pcap
+# Test artifacts
+# Test outputs
+test_quarantine_*/
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+# Temporary
+tmp/
+temp/
+*.tmp
 # Quarantine files
 quarantine/
 # OS
 .DS_Store
 Thumbs.db
 
+# Temporary files
+*.tmp
+/tmp/
+# Logs
+*.log
+logs/
+*.jsonl
+
+# Quarantine
+quarantine/
+
+# PCAP files (large)
+*.pcap
+*.pcapng
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
 # Test and coverage
 .pytest_cache/
 .coverage
