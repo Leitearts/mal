@@ -70,6 +70,21 @@ env/
 *.swo
 *~
 
+# Logs
+*.log
+logs/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Quarantine files
+quarantine/
 # OS
 .DS_Store
 Thumbs.db
