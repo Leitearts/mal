@@ -66,6 +66,10 @@ env/
 *~
 
 # Logs
+*.log
+logs/
+quarantine/
+
 logs/
 *.log
 # OS
