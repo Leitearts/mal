@@ -127,6 +127,9 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Project specific
+quarantine/
+*.pcap
 # Test artifacts
 # Test outputs
 test_quarantine_*/
