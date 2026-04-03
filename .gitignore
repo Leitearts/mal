@@ -114,6 +114,22 @@ quarantine/
 .DS_Store
 Thumbs.db
 
+# Logs
+*.log
+logs/
+*.jsonl
+
+# Quarantine
+quarantine/
+
+# PCAP files (large)
+*.pcap
+*.pcapng
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
 # Test and coverage
 .pytest_cache/
 .coverage
