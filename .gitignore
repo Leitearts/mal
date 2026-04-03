@@ -28,6 +28,7 @@ __pycache__/
 .Python
 env/
 venv/
+ENV/
 
 # Distribution / packaging
 .Python
@@ -126,6 +127,7 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Test artifacts
 # Test outputs
 test_quarantine_*/
 # Testing
@@ -133,6 +135,10 @@ test_quarantine_*/
 .coverage
 htmlcov/
 
+# Build artifacts
+build/
+dist/
+*.egg-info/
 # Temporary
 tmp/
 temp/
