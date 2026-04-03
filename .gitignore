@@ -63,6 +63,10 @@ wheels/
 .installed.cfg
 *.egg
 
+# Virtual environments
+venv/
+env/
+ENV/
 # Testing
 .pytest_cache/
 .tox/
@@ -89,6 +93,12 @@ env/
 *~
 
 # Logs
+logs/*.log
+logs/*.jsonl
+*.log
+
+# Quarantine
+quarantine/
 *.log
 logs/
 *.jsonl
@@ -108,6 +118,15 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary
+tmp/
+temp/
+*.tmp
 # Quarantine files
 quarantine/
 # OS
