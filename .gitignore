@@ -1,3 +1,192 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Logs and runtime artifacts
+logs/
+*.log
+*.jsonl
+
+# Generated test PCAP files
+*.pcap
+
+# Quarantine directory
+quarantine/
+
+# Models
+models/
+# Python cache files
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Distribution / packaging
+.Python
+.Python
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+logs/
+*.log
+
+# Virtual environments
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+logs/
+*.log
+
+# Quarantine
+quarantine/
+
+# Virtual environments
+venv/
+env/
+ENV/
+# Testing
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+
+# IDEs
+htmlcov/
+*.cover
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/*.log
+logs/*.jsonl
+*.log
+
+# Quarantine
+quarantine/
+*.log
+logs/
+*.jsonl
+
+# Malware detection system
+quarantine/
+samples/*.pcap
+models/*.pkl
+
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+quarantine/
+*.pcap
+# Test artifacts
+# Test outputs
+test_quarantine_*/
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+# Temporary
+tmp/
+temp/
+*.tmp
+# Quarantine files
+quarantine/
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+/tmp/
+# Logs
+*.log
+logs/
+*.jsonl
+
+# Quarantine
+quarantine/
+
+# PCAP files (large)
+*.pcap
+*.pcapng
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+# Test and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+# Logs and databases
+*.log
+*.sqlite
+
+# Logs
+*.log
+logs/
+quarantine/
+
+logs/
+*.log
+# OS
+.DS_Store
+Thumbs.db
