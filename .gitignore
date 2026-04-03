@@ -1,4 +1,9 @@
 # Python cache files
+# Logs
+logs/
+*.log
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,6 +11,24 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.Python
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+logs/
+*.log
+
+# Virtual environments
+venv/
+env/
+ENV/
 build/
 develop-eggs/
 dist/
@@ -21,6 +44,18 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Testing
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+
+# IDEs
+htmlcov/
+*.cover
 
 # Virtual environments
 venv/
@@ -38,6 +73,13 @@ env/
 *.log
 *.sqlite
 
+# Logs
+*.log
+logs/
+quarantine/
+
+logs/
+*.log
 # OS
 .DS_Store
 Thumbs.db
