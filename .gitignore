@@ -72,6 +72,7 @@ logs/
 
 # Quarantine
 quarantine/
+
 # Virtual environments
 venv/
 env/
@@ -152,6 +153,9 @@ quarantine/
 .DS_Store
 Thumbs.db
 
+# Temporary files
+*.tmp
+/tmp/
 # Logs
 *.log
 logs/
