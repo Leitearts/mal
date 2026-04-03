@@ -1,3 +1,7 @@
+# Logs
+logs/
+*.log
+
 # Python
 __pycache__/
 *.py[cod]
@@ -29,6 +33,15 @@ htmlcov/
 .mypy_cache/
 
 # IDEs
+htmlcov/
+*.cover
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
 .vscode/
 .idea/
 *.swp
@@ -38,3 +51,6 @@ htmlcov/
 # Logs
 logs/
 *.log
+# OS
+.DS_Store
+Thumbs.db
