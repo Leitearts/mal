@@ -68,7 +68,7 @@ malware_detection_mvp/
 │   ├── file_extraction.py         # Multi-protocol file extraction
 │   ├── signature_detection.py     # Hash-based detection
 │   ├── heuristic_analysis.py      # Behavioral analysis
-│   ├── ml_classifier.py           # ML classification
+│   ├── ml_classifier.py           # Additional heuristic classifier (legacy name)
 │   ├── risk_scoring.py            # Risk fusion engine
 │   └── response_handler.py        # Threat response
 │
@@ -85,8 +85,7 @@ malware_detection_mvp/
 │   └── generate_samples.py        # PCAP sample generator
 │
 ├── logs/                          # Output logs (created on run)
-├── quarantine/                    # Malware quarantine (created on run)
-└── models/                        # ML models (for future use)
+└── quarantine/                    # Malware quarantine (created on run)
 ```
 
 ---
@@ -100,8 +99,7 @@ Network Traffic → Packet Capture → Stream Reassembly → File Extraction
      ↓
 Multi-Layer Detection:
   • Signature Matching (known malware hashes)
-  • Heuristic Analysis (suspicious characteristics)
-  • ML Classification (behavioral patterns)
+  • Heuristic Analysis (suspicious characteristics + 50+ behavioral rules)
      ↓
 Risk Scoring → Response Actions:
   • Alert (log to SIEM)
@@ -117,7 +115,9 @@ Risk Scoring → Response Actions:
 - File type spoofing (.pdf.exe)
 - Embedded executables
 - Suspicious API calls
-- Zero-day malware (heuristics + ML)
+- Unknown malware (via heuristic rules)
+
+**Note:** This system uses signature matching and rule-based heuristics only. No machine learning models are included.
 
 **📊 Protocols Supported:**
 - HTTP (uploads/downloads)
@@ -213,7 +213,7 @@ Develop new detection algorithms
 
 **Setup:**
 - Add custom heuristics
-- Train ML models
+- Add machine learning (requires model training and integration)
 - Integrate external APIs
 
 ---
@@ -398,7 +398,7 @@ tcpdump -r samples/test.pcap -n
 ### Contributing
 Contributions welcome! Areas for enhancement:
 - Additional protocol parsers
-- ML model training pipeline
+- Machine learning model integration (requires training data and infrastructure)
 - Web dashboard/UI
 - YARA rule integration
 - Performance optimization
@@ -454,7 +454,7 @@ See LICENSE file for complete terms and disclaimers.
 ## 🌟 Key Features Summary
 
 ✅ **Production-Ready Architecture**
-✅ **Multi-Layer Detection (Signatures + Heuristics + ML)**
+✅ **Two-Layer Detection (Signatures + Heuristics)**
 ✅ **Real-Time Analysis (<100ms latency)**
 ✅ **Comprehensive Logging & Forensics**
 ✅ **Automated Threat Response**

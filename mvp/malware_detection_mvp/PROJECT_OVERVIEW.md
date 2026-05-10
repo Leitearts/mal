@@ -14,7 +14,7 @@ This is a production-grade Minimum Viable Product (MVP) of a real-time network m
 **Key Capabilities:**
 - Real-time packet capture and analysis
 - Multi-protocol support (HTTP, SMTP, FTP)
-- Three-layer detection (signatures, heuristics, ML)
+- Two-layer detection (signature matching + heuristic analysis)
 - Automated threat response (alert, quarantine, block)
 - Comprehensive logging and forensics
 
@@ -47,7 +47,7 @@ That's it! The system will analyze sample traffic and demonstrate detection capa
 - `file_extraction.py` - Multi-protocol file extraction
 - `signature_detection.py` - Hash-based malware detection
 - `heuristic_analysis.py` - Behavioral analysis engine
-- `ml_classifier.py` - Machine learning classifier
+- `ml_classifier.py` - Additional heuristic classifier (legacy name)
 - `risk_scoring.py` - Multi-layer risk fusion
 - `response_handler.py` - Automated threat response
 
@@ -107,19 +107,17 @@ That's it! The system will analyze sample traffic and demonstrate detection capa
 ┌─────────────────────────────────────────────────────────────┐
 │           Multi-Layer Detection Pipeline                     │
 │                                                              │
-│  Layer 1: Signature Detection (40%)                         │
+│  Layer 1: Signature Detection (50%)                         │
 │    • MD5/SHA-256 hash matching                              │
 │    • Pattern-based detection                                │
 │                                                              │
-│  Layer 2: Heuristic Analysis (30%)                          │
+│  Layer 2: Heuristic Analysis (50%)                          │
 │    • Entropy analysis                                       │
 │    • File type validation                                   │
 │    • Suspicious string scanning                             │
 │    • Embedded executable detection                          │
-│                                                              │
-│  Layer 3: ML Classification (30%)                           │
-│    • 50+ feature extraction                                 │
-│    • Behavioral classification                              │
+│    • 50+ behavioral rules                                   │
+│    • Statistical analysis                                   │
 │    • Context-aware scoring                                  │
 └──────────────────────┬──────────────────────────────────────┘
                        │
@@ -170,11 +168,11 @@ That's it! The system will analyze sample traffic and demonstrate detection capa
 **Confidence:** 70-90% depending on indicators  
 **Limitations:** May produce false positives on legitimate packed software
 
-### 3. Machine Learning Classification
-**Detects:** Malware based on behavioral patterns  
-**Features:** 50+ statistical, structural, and contextual features  
-**Confidence:** Varies based on training data  
-**Note:** MVP uses rule-based approximation; production would use trained models
+### Note on Machine Learning
+**Current Status:** This MVP does not include actual machine learning models  
+**Implementation:** Uses rule-based heuristics with statistical analysis  
+**Features:** 50+ statistical, structural, and contextual features evaluated by rules  
+**Future Enhancement:** Could be extended with trained ML models (RandomForest, XGBoost, etc.)
 
 ---
 
@@ -297,7 +295,7 @@ matches = rules.match(data=file_data)
 
 ### Current MVP Constraints
 1. **No TLS Inspection:** Cannot decrypt HTTPS without MITM proxy
-2. **Rule-Based ML:** Uses heuristics instead of trained models
+2. **No Machine Learning:** Uses only rule-based heuristics, no trained ML models
 3. **Single-Node:** No distributed processing
 4. **Limited Protocols:** HTTP, SMTP, FTP only
 5. **No Persistence:** Stream state lost on restart
@@ -335,7 +333,7 @@ matches = rules.match(data=file_data)
 ### Contributing
 Contributions welcome! Areas for enhancement:
 - Additional protocol parsers
-- ML model training pipeline
+- Actual ML model integration (requires training data and model development)
 - YARA rule integration
 - Dashboard/UI development
 - Performance optimization
@@ -352,12 +350,11 @@ Contributions welcome! Areas for enhancement:
 - [ ] Docker containerization
 
 ### Version 2.0 (Future)
-- [ ] Trained ML models (RandomForest/XGBoost)
+- [ ] Actual ML models with training pipeline (RandomForest/XGBoost)
 - [ ] Distributed architecture
 - [ ] TLS inspection capability
 - [ ] Additional protocols (SMB, DNS)
 - [ ] Behavioral sandboxing integration
-- [ ] GPU-accelerated detection
 
 ---
 
